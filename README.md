@@ -1,73 +1,126 @@
 # Student Code Verifier and Calculator
 
-This repository contains two main projects: a program checker for verifying the outputs of other students' programs and a calculator application, both developed in C and designed to run on Linux systems. The program checker extensively uses Linux system calls and processes to manage and automate the verification process, whereas the calculator project provides an interface for performing arithmetic operations.
+This repository contains two main projects:  
+1. **Checker** – a program verifier that compares student program outputs.  
+2. **Calculator Builder** – a client-server based calculator.  
 
-## ProgramChecker
+Both projects are written in C and utilize Linux system calls for process and file management.
 
-### Overview
-`ProgramChecker` is a tool developed to assess the correctness of programs submitted by students, ensuring they meet predefined output criteria. It leverages the Linux environment to fork processes, manage permissions, and handle files efficiently.
+---
 
-### Features
-- **Automated File Comparison**: Automatically compares the output of students' programs with expected outputs using system-level operations.
-- **Process Control**: Utilizes Linux process management to handle multiple student programs simultaneously.
-- **Detailed Error Logging**: Implements comprehensive error checking and logging to manage file and process-related errors effectively.
-
-### Getting Started
-- Navigate to the directory containing the program files:
-  ```
-  cd Desktop/OS
-  ```
-- Compile the verifier program using GCC:
-  ```
-  gcc comp.c -o comp.out
-  ```
-- Execute the program with the required file paths:
-  ```
-  ./comp.out /u/e2020/hajajya/Desktop/OS/1.txt /u/e2020/hajajya/Desktop/OS/2.txt
-  ```
-
-### Paths and Configuration
-- The paths provided in the compilation and execution instructions are specific to my development environment. If you wish to use this tool in your environment, you will need to adjust the file paths according to where your files are located.
-
-### Advanced Usage
-- To handle multiple student submissions, configure the paths in `confFile.txt`:
-  ```
-  ./ex2.out /u/e2020/hajajya/Desktop/OS/confFile.txt
-  ```
-- The program assumes `main.exe` exists due to prior compilation as per the instructions.
-
-## CalculatorBuilder
+## 📁 Checker
 
 ### Overview
-`CalculatorBuilder` consists of a straightforward calculator application capable of basic arithmetic operations such as addition, subtraction, multiplication, and division, showcasing the use of command line arguments and basic I/O.
+The `Checker` project verifies student-submitted programs by comparing their output to expected results. It automates execution, captures outputs, and performs character-by-character file comparison.
 
 ### Features
-- **Basic Arithmetic Operations**: Supports the four fundamental arithmetic operations.
-- **Command-Line Interface**: Operates entirely through the command line for input and output, enhancing its usability in educational settings.
+- ✅ **Automated Output Comparison**  
+- 🧠 **Fork and Exec Process Handling**  
+- 🪵 **Detailed Debug Output** with ASCII-level mismatch detection  
+- 📂 **Configurable Paths via `confFile.txt`**
 
-### Getting Started
-- Navigate to the project directory:
-  ```
-  cd Desktop/OSEX2
-  ```
-- Compile and run the server component:
-  ```
-  gcc ex2_srv.c -o ex2_srv.out
-  ./ex2_srv.out &
-  ```
-- Compile and execute the client component, specifying operations and operands:
-  ```
-  gcc ex2_client.c -o ex2_client.out
-  ./ex2_client.out <SPID> 30 1 40
+### Usage
+1. Compile the comparison program:
+   ```bash
+   gcc comp.c -o comp.out
+   gcc ex2.c -o ex2.out
+   ```
+
+2. Set up `confFile.txt` to include:
+   ```
+   /full/path/to/allStudents/
+   /full/path/to/input.txt
+   /full/path/to/output.txt
+   ```
+
+3. Run the main checker:
+   ```bash
+   ./ex2.out /full/path/to/confFile.txt
+   ```
+
+4. Output:
+   - Creates `RealOutput.txt` dynamically.
+   - Compares with `output.txt`.
+   - Logs results to `results.csv`.
+
+---
+
+## 📁 Calculator Builder
+
+### Overview
+A client-server calculator built in C using separate executables for server and client.
+
+### Features
+- ➕➖✖️➗ Supports basic arithmetic operations
+- 🧾 Argument-based interaction
+- 🧵 Runs server as a background process
+
+### Usage
+1. Compile and run the server:
+   ```bash
+   gcc ex2_srv.c -o ex2_srv.out
+   ./ex2_srv.out &
+   ```
+
+2. Compile and run the client:
+   ```bash
+   gcc ex2_client.c -o ex2_client.out
+   ./ex2_client.out <ServerPID> <op1> <operation_code> <op2>
+   ```
+
+   Example:
+   ```bash
+   ./ex2_client.out 1234 30 1 40
+   ```
+
+   - `1` = addition
+   - `2` = subtraction
+   - `3` = multiplication
+   - `4` = division
+
+---
+
+## 🛠️ Technologies
+- **C** with `fork`, `exec`, `open`, `read`, `write`, `dup2`
+- **Linux (Ubuntu)** shell usage
+- **GDB** for debugging with:
+  ```bash
+  gdb ./ex2.out
+  (gdb) set args /path/to/confFile.txt
+  (gdb) set follow-fork-mode child
+  (gdb) layout src
+  (gdb) break main
+  (gdb) run
   ```
 
-### Paths and Configuration
-- Similar to the `ProgramChecker`, the paths used in this project are specific to my setup. Ensure to modify the paths in the command lines to reflect the directories and files in your environment.
+---
 
-## Technologies Used
-- **C Programming**: Utilized for both projects to interact directly with Linux system calls.
-- **Linux**: Provides a robust environment for process and file management.
-- **GCC**: Used to compile the source code into executable programs.
+## 📌 Notes
+- All absolute paths in the code must be adjusted according to your working directory.
+- For debugging output differences, `compare()` prints ASCII values of mismatching characters.
+- Output comparison is strict – **no ignoring whitespace or line-endings**.
 
-### Process Management
-The core functionality of the `ProgramChecker` revolves around creating and managing processes using the fork system call. This creates a parent-child (father-son) process hierarchy, where the parent process forks multiple child processes to handle concurrent execution of student programs, thereby enabling efficient multitasking and resource management within the system.
+---
+
+## 📦 Repository Structure
+
+```
+.
+├── Checker
+│   ├── allStudents/
+│   ├── comp.c
+│   ├── ex2.c
+│   ├── confFile.txt
+│   ├── input.txt
+│   ├── output.txt
+│   └── results.csv
+├── Calculator Builder
+│   ├── ex2_client.c
+│   ├── ex2_srv.c
+│   └── Explanation PDF Calculator Builder.pdf
+└── README.md
+```
+
+---
+
+Made with ❤️ by Yaniv Hajaj
