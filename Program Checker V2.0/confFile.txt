@@ -1,0 +1,4 @@
+/home/yaniv/Desktop/OS/Checker/allStudents/
+/home/yaniv/Desktop/OS/Checker/input.txt
+/home/yaniv/Desktop/OS/Checker/output.txt
+

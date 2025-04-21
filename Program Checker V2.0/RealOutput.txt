@@ -1,0 +1,3 @@
+Please enter mode
+Please enter two numbers
+The result is:7

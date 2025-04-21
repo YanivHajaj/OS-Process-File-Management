@@ -1,0 +1,1 @@
+./ex2.out /home/yaniv/Desktop/OS-Process-File-Management-main/Checker/confFile.txt
